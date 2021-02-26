@@ -27,6 +27,8 @@ Lidar with ground truth bounding boxes (Need to add color for each class)
 
 ![](https://github.com/harryrobotics/waymo_open_dataset_toolbox/blob/master/media/lidar.png)
 
+![](https://github.com/harryrobotics/waymo_open_dataset_toolbox/blob/master/media/lidar1.png)
+
 Front camera:
 
 ![](https://github.com/harryrobotics/waymo_open_dataset_toolbox/blob/master/media/front_camera.png)
