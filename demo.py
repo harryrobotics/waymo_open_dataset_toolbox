@@ -38,6 +38,7 @@ lidar_labels = utils.get_labels_from_frame(frame)
 point_cloud,_ = utils.point_cloud_from_frame(frame)
 
 #Test visualise with open3d
+utils.render_camera(frame,cam_name='all')
 
 utils.render_camera(frame,cam_name='FRONT')
 
