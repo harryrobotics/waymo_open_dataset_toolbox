@@ -5,7 +5,12 @@ numpy
 
 pytorch (try to get rid of it soon)
 
-waymo-development-kit
+waymo open dataset development kit (https://github.com/waymo-research/waymo-open-dataset
+
+```
+pip3 install waymo-open-dataset-tf-2-1-0==1.2.0 --user
+```
+
 
 You need to download the dataset from Waymo Open Dataset (Warning: about 1TB)  and the folder structure is like this:
 
