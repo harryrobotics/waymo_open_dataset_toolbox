@@ -19,6 +19,42 @@ from waymo_open_dataset.utils import transform_utils
 from waymo_open_dataset.utils import  frame_utils
 from waymo_open_dataset import dataset_pb2 as open_dataset
 
+from pathlib import Path
+
+class Waymo_data():
+
+    def __init__(self,data_path):
+        self.data_path = Path(data_path)
+        self.segment_list = self.get_segment_list()
+
+    def get_segment_list(self):
+        from os import walk
+        list_file = []
+        for (dirpath, dirnames, filenames) in walk(self.data_path / 'raw_data'):
+            list_file.extend(filenames)
+            # print(val_sequences)
+            print("Number of sequences: ", len(list_file))
+        return list_file
+
+    def get_frame(self,segment_idx,sample_idx):
+        sequence_name = self.segment_list[segment_idx]
+        file_name = str(self.data_path  / 'raw_data' / sequence_name)
+        segment = get_data_segment(file_name)
+        frame = get_frame_from_index(segment,sample_idx)
+
+        return frame
+
+    def get_lidar(self,segment_idx,sample_idx):
+        frame = self.get_frame(segment_idx,sample_idx)
+        point_cloud,_ = point_cloud_from_frame(frame)
+
+        return point_cloud
+
+    def get_lidar_labels(self,frame):
+        labels = get_labels_from_frame(frame)
+
+        return labels
+
 
 def print_frame_info(frame):
     print("Location: ",frame.context.stats.location)
