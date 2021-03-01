@@ -1,3 +1,3 @@
 numpy
 waymo-dataset-devkit
-pytorch
+open3d-python
