@@ -1,18 +1,12 @@
+#Some code is written by myself
+#Some code is borrowed from : https://www.a2d2.audi/a2d2/en/tutorial.html
+#some code is borrowed from: https://github.com/open-mmlab/OpenPCDet
+
 import open3d as o3d
 import numpy as np
 
 
-######################################################################
-#####Try to eliminate this to get rid of pytorch######################
-#####Borrow from PCDet################################################
-import torch
-
-def check_numpy_to_torch(x):
-    if isinstance(x, np.ndarray):
-        return torch.from_numpy(x).float(), True
-    return x, False
-
-
+#Modified from https://github.com/open-mmlab/OpenPCDet
 def rotate_points_along_z(points, angle):
     """
     Args:
@@ -20,26 +14,24 @@ def rotate_points_along_z(points, angle):
         angle: (B), angle along z-axis, angle increases x ==> y
     Returns:
     """
-    points, is_numpy = check_numpy_to_torch(points)
-    angle, _ = check_numpy_to_torch(angle)
 
-    cosa = torch.cos(angle)
-    sina = torch.sin(angle)
-    zeros = angle.new_zeros(points.shape[0])
-    ones = angle.new_ones(points.shape[0])
-    rot_matrix = torch.stack((
+    cosa = np.cos(angle)
+    sina = np.sin(angle)
+    zeros = np.zeros(points.shape[0])
+    ones = np.ones(points.shape[0])
+    rot_matrix = np.stack((
         cosa,  sina, zeros,
         -sina, cosa, zeros,
         zeros, zeros, ones
-    ), dim=1).view(-1, 3, 3).float()
-#     print(rot_matrix)
+    ), axis=1).reshape(-1, 3, 3)
 
-    points_rot = torch.matmul(points[:, :, 0:3], rot_matrix)
-    points_rot = torch.cat((points_rot, points[:, :, 3:]), dim=-1)
-    return points_rot.numpy() if is_numpy else points_rot
 
-#############################################################################
+    points_rot = np.matmul(points[:, :, 0:3], rot_matrix)
+    points_rot = np.concatenate((points_rot, points[:, :, 3:]), axis=-1)
+    return points_rot
 
+
+#Modified from https://github.com/open-mmlab/OpenPCDet
 def boxes_to_corners_3d(boxes3d):
     """
         7 -------- 4
@@ -52,24 +44,22 @@ def boxes_to_corners_3d(boxes3d):
     Args:
         boxes3d:  (N, 7) [x, y, z, dx, dy, dz, heading], (x, y, z) is the box center
     Returns:
-        corners3d of N boxes    
     """
-    boxes3d, is_numpy = check_numpy_to_torch(boxes3d)
+#     boxes3d, is_numpy = check_numpy_to_torch(boxes3d)
 
-    template = boxes3d.new_tensor((
+    template = np.array([
         [1, 1, -1], [1, -1, -1], [-1, -1, -1], [-1, 1, -1],
         [1, 1, 1], [1, -1, 1], [-1, -1, 1], [-1, 1, 1],
-    )) / 2
+    ]) / 2
 
-    corners3d = boxes3d[:, None, 3:6].repeat(1, 8, 1) * template[None, :, :]
 
-    corners3d = rotate_points_along_z(corners3d.view(-1, 8, 3), boxes3d[:, 6]).view(-1, 8, 3)
+    corners3d = np.repeat(boxes3d[:, None, 3:6], 8, axis=1) * template[None, :, :]
+    corners3d_test = corners3d
+    corners3d = rotate_points_along_z(corners3d.reshape((-1, 8, 3)), boxes3d[:, 6]).reshape((-1, 8, 3))
 
     corners3d += boxes3d[:, None, 0:3]
 
-    return corners3d.numpy() if is_numpy else corners3d
-
-
+    return corners3d
 
 def create_open3d_pc(lidar):
     # create open3d point cloud object

@@ -13,7 +13,7 @@ for (dirpath, dirnames, filenames) in walk(ROOT_DIR / 'raw_data'):
 # print(val_sequences)
 print("Number of sequences: ", len(list_file))
 
-sequence_idx = 500
+sequence_idx = 700
 sample_idx = 20
 
 print(sequence_idx)
