@@ -3,8 +3,6 @@ You need to install:
 
 numpy
 
-pytorch (try to get rid of it soon)
-
 waymo open dataset development kit (https://github.com/waymo-research/waymo-open-dataset
 
 ```
