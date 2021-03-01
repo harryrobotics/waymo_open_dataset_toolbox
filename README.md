@@ -3,7 +3,7 @@ You need to install:
 
 numpy
 
-waymo open dataset development kit (https://github.com/waymo-research/waymo-open-dataset
+waymo open dataset development kit (https://github.com/waymo-research/waymo-open-dataset)
 
 ```
 pip3 install waymo-open-dataset-tf-2-1-0==1.2.0 --user
