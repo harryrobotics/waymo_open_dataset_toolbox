@@ -1,0 +1,22 @@
+[project]
+name = "waymo-toolbox"
+version = "2.0.0"
+description = "Toolkit for visualizing Waymo Open Dataset point clouds and annotations"
+requires-python = ">=3.8"
+dependencies = [
+    "numpy",
+    "tensorflow>=2.1.0",
+    "waymo-open-dataset-tf-2-1-0",
+]
+
+[project.optional-dependencies]
+open3d = ["open3d"]
+mayavi = ["mayavi"]
+dev = ["pytest", "black", "mypy"]
+
+[project.scripts]
+waymo-vis = "waymo_toolbox.cli:main"
+
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
